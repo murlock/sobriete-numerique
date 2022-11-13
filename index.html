@@ -1,0 +1,347 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/black.css" id="theme">
+
+		<style>
+			body {
+				font-size: 8px;
+			}
+			.mycode {
+				font-family: 'Lucida Console', monospace;
+			}
+		</style>
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<h2>Sobriété Numérique</h2>
+					<ul style="list-style-type: none;">
+						<li>Aquinum</li>
+						<li>Planete Tech'Care</li>
+					</ul>
+					<aside class="notes">
+						Aquinum: association des entrepreneurs du Numérique
+						Planète Tech'Care: initiative du secteur pour réduire l'empreinte environmental du numérique
+					</aside>
+				</section>
+				<section>
+					Michael Bonfils
+					<p>
+						bonfils.michael@protonmail.com
+					</p>
+					<aside class="notes">
+						7 ans dans l'embarqué (32 mo de RAM)
+						10 ans dans le cloud
+					</aside>
+				</section>
+				<section>
+					<h2>Sommaire</h2>
+					<ul style="list-style-type: none;">
+						<li>Contexte</li>
+						<li>Site web mobile</li>
+						<li><small>Les images</small></li>
+						<li><small>Les formats d'image</small></li>
+						<li><small>Javascript</small></li>
+						<li>Application mobile</li>
+						<li><small>Resource</small></li>
+						<li><small>Connexion entre mobile et serveur</small></li>
+					</ul>
+					<aside class="notes">
+						Presque pas de JS
+					</aside>
+				</section>
+				<section>
+					<h2>Contexte</h2>
+					<ul style="list-style-type: none;">
+						<li>Benchmark iPhone 5s: 259</li>
+						<li>Benchmark iPhone 12: 1585</li>
+					</ul>
+					<small>https://browser.geekbench.com/mobile-benchmarks</small>
+					<aside class="notes">
+						Avez-vous un téléphone dernier cri ?
+						Et vos utilisateurs / clients ?
+						- vos utilisateurs sont des clients (sans doute) aussi des consommateurs  !
+						Bénéfice:
+							navigation plus rapide
+								visiteurs content
+								mais aussi le référencement 
+								réseau moins sollicité
+									(zone blanche, opérateur ~3G~2G, pays où la data est payante !)
+							batterie
+					</aside>
+				</section>
+				<section>
+					<h2>Site web pour mobile</h2>
+					<aside class="notes">
+						<ul>
+							<li>Quantité de donnée</li>
+							<li>moins de donnée, site plus réactif</li>
+							<li>batterie du téléphone</li>
+							<li>fonctionne aussi les sites "normaux"</li>
+						</ul>
+					</aside>
+				</section>
+				<section>
+					<h2>Le navigateur</h2>
+					<aside class="notes">
+						Pour commencer, utiliser celui de votre Mac ou de votre PC
+						Le plus proche de la cible (chrome, FF ou Safari pour iPhone)
+					</aside>
+				</section>
+				<section>
+					<h2>Les images</h2>
+					<section>
+						<h4>La bonne mesure</h4>
+						<p>Pixel</p>
+						<p>Inch ou Centimetre</p>
+						<p>em</p>
+						<p>vw</p>
+						<aside class="notes">
+							<ul>
+								<li>Pixel: n'est pas "toujours" un pixel</li>
+								<li>Inch ou Centimètre: dépend du DPI</li>
+								<li>EM: Lié à la taille du texte</li>
+								<li>VW: 1% de la largeur du viewport</li>
+							</ul>
+						</aside>
+					</section>
+					<section>
+						le selecteur CSS
+						<pre><code data-trim data-line-numbers>
+							@media (min-width: 600px) {
+								rendu1 { background-image: url("big.png"); ... }
+							}
+							@media (max-width: 600px) {
+								rendu1 { background-image: url("small.png"); ... }
+							}
+							<div class="rendu1"></div>
+						</code></pre>
+						<aside class="notes">
+							Utiliser avec les divs mais ne permet pas d'avoir les évènements DOM
+							Le CSS est principalement pour le rendu
+						</aside>
+					</section>
+					<section>
+						la balise img
+						<pre><code data-trim data-line-numbers>
+							<img class="myclass"
+								src="/img.png">
+						</code></pre>
+					</section>
+					<section>
+						La balise img<br/>
+						L'attribut <span class="mycode">srcset</span>
+						<aside class="notes">
+							Permet de préciser plusieurs resources pour la même image
+						</aside>
+					</section>
+					<section>
+						<pre><code data-line-numbers data-trim>
+							<img srcset="
+								img1-1000.jpg 1000w,
+								img1-500.jpg 500w,
+								img1-200.jpg 200w"
+							src="img1.jpg" />
+						</code></pre>
+						<aside class="notes">
+							Va charger l'image suivante la taille disponible en largeur
+						</aside>
+					</section>
+					<section>
+						DEMO
+                        <br/>
+                        <a href="demo/demo-img.html" target="_blank">Démarrer</a>
+					</section>
+					<section>
+						L'attribut <span class="mycode">sizes</span> permet aussi de préciser plus finement la taille à prendre en compte
+						<aside class="notes">
+						</aside>
+					</section>
+				</section>
+				<section>
+					<h2>Les images</h2>
+					<section>
+						Les pictos - CSS ou inline ?
+						<pre><code data-line-numbers data-trim>
+							<img src="data:image/png;base64,AABBCC">
+						</code></pre>
+					</section>
+					<section>
+						<p>Mode paresseux</p>
+						<aside class="notes">
+							A't'on toujours besoin du chargement d'une image ?
+						</aside>
+					</section>
+					<section>
+						<pre><code data-line-numbers data-trim>
+							<img src="img1.jpg" loading=lazy>
+						</code></pre>
+						ou / et CSS
+						<pre><code data-line-numbers data-trim>
+							content-visibility: auto
+						</code></pre>
+					</section>
+					<section>
+						DEMO
+                        <br />
+                        <a href="demo/demo-lazy.html" target="_blank">Démarrer</a>
+					</section>
+					<section>
+						Remplacement d'une image par un "placeholder flou"
+						<pre><code data-line-numbers data-trim>
+							&lt;img src="net.jpg" loading=lazy
+								style="
+								background-size: cover;
+								background-image: url('flou.jpg');"
+							&gt;
+						</code></pre>
+					</section>
+					<section>
+						<div style="position:relative; width:650px; height:365px; margin:0 auto;">
+							<img class="fragment fade-out" data-fragment-index="0" width="650" height="365" src="cat2.jpg" style="position:absolute;top:0;left:0;" />
+							<img class="fragment fade-in"  data-fragment-index="0" width="650" height="365" src="cat.jpg" style="position:absolute;top:0;left:0;" />
+						</div>
+						<p class="fragment">8 Ko vs 179 Ko</p>
+					</section>
+				</section>
+				<section>
+					Les formats
+					<section>
+						<h4>PNG, WEBP, ...</h4>
+						<table>
+							<thead>
+								<tr><th>format</th><th></th></tr>
+							</thead>
+							<tbody>
+								<tr><td>JPG</td><td>avec perte</td></tr>
+								<tr><td>PNG</td><td>sans perte, transparence</td></tr>
+								<tr><td>SVG</td><td>vectoriel</td></tr>
+								<tr><td>webp</td><td>avec ou sans perte, transparence</td></tr>
+							</tbody>
+						</table>
+					</section>
+					<section>
+						<img src="./old_bender.gif" style="vertical-align: baseline; margin: 0px;"/> ou <video id="myvideo" style="vertical-align: baseline;" nocontrols autoplay loop><source src="old_bender.mp4" type="video/mp4"/></video>
+						<p class="fragment">
+							GIF: 123 Ko vs MP4: 30 Ko
+						</p>
+				  </section>
+					<section>
+						Autres formats d'image animée disponibles: (<code>&lt;img&gt;</code>)
+						<table>
+							<thead>
+								<tr><th>format</th><th>taille</th></tr>
+							</thead>
+							<tbody>
+								<tr><td>apng</td><td class="fragment">152 ko</td></tr>
+								<tr><td>webp</td><td class="fragment">47 ko</td></tr>
+								<tr><td>avif</td><td class="fragment">32 ko</td></tr>
+							</tbody>
+						</table>
+						<p class="fragment">AV1 très récent</p>
+					</section>
+				</section>
+				<section>
+					Javascript
+					<section>
+						<ol>
+ 							<li>Toujours minifier vos fichiers</li>
+							<li>Activer la compression de votre serveur web</li>
+						</ol>
+					</section>
+					<section>
+						Expérimenter l'attribut async
+						<pre><code data-trim data-line-numbers>
+							&lt;script src="library.js" async&gt;&lt;/script&gt;
+						</code></pre>
+						<img src="async.png" class="fragment">
+					</section>
+					<section>
+						Expérimenter l'attribut defer
+						<pre><code data-trim data-line-numbers>
+							&lt;script src="library.js" defer&gt;&lt;/script&gt;
+						</code></pre>
+						<img src="defer.png" class="fragment">
+					</section>
+				</section>
+				<section>
+					Les Apps
+					<section>
+						Eviter de mettre des resources HD pour un smartphone VGA !
+					</section>
+					<section>
+						<p>App Slicing (iPhone)<br>
+						Proposer la bonne application pour le bon device</p>
+						<p>Google Play Dynamic Delivery.<br>
+						Télécharge uniquement les ressources nécessaires</p>
+						<aside class="notes">
+							A activer lors du développement mais 
+							on peut se retrouver coincé si on n'utilise pas les outils
+							de l' OS
+						</aside>
+					</section>
+					<section>
+						<p>Echange avec le backend:</p>
+						éviter le JSON
+						plutôt probobuf/grpc ou flatbuffers
+						<aside class="notes">
+							Permet d'éviter des copies de buffer
+							Contient le check des types des champs
+						</aside>
+					</section>
+					<section>
+						<img src="benchmark-flat-json.png">
+					</section>
+				</section>
+				<section>
+					Echange
+				</section>
+				<section>
+					Référence:
+					<ul>
+						<li><a href="https://developer.mozilla.org">MDN</a></li>
+						<li><a href="https://ezgif.com/">Conversion Image</a></li>
+						<li><a href="https://javascript.plainenglish.io/async-and-defer-the-complete-guide-to-loading-javascript-properly-ce6edce1e6b5">Defer / Async</a></li>
+						<li><a href="https://revealjs.com/">Reveal JS</a></li>
+						<li><a href="https://www.industrialempathy.com/posts/image-optimizations/">image optimizations</a></li>
+						<li><a href="https://words.mxbry.com/a-workflow-for-lazy-loading-images-with-nice-blurry-placeholders-8592894d13fa">Blurry placeholder</a></li>
+						<li><a href="https://www.youtube.com/watch?v=BIYCZvbs9VU">Better compression = Better networking</a></li>
+						<li><a href="https://www.slideshare.net/dougsillars/bordeaux-js-fastandbeautiful">Delivering Fast and Beautiful Images and Video</a></li>
+						<li><a href="https://help.apple.com/xcode/mac/current/#/devbbdc5ce4f">Apple: app Thinning</a></li>
+						<li><a href="https://github.com/google/flatbuffers">flatbuffers</a></li>
+					</ul>
+				</section>
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+
+			$("myvideo").start()
+		</script>
+	</body>
+</html>
